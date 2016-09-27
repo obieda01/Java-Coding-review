@@ -1,27 +1,39 @@
-package Q10_08_Find_Duplicates;
-
-import CtCILibrary.AssortedMethods;
+package Q10_04_Sorted_Search_No_Size.Arrayish;
 
 public class Question {
 
-	public static void checkDuplicates(int[] array) {
-		BitSet bs = new BitSet(32000);
-		for (int i = 0; i < array.length; i++) {
-			int num = array[i];
-			int num0 = num - 1; // bitset starts at 0, numbers start at 1
-			if (bs.get(num0)) { 
-				System.out.println(num);
+	public static int binarySearch(Listy list, int value, int low, int high) {
+		int mid;
+		
+		while (low <= high) {
+			mid = (low + high) / 2;
+			int middle = list.elementAt(mid);
+			if (middle > value || middle == -1) {
+				high = mid - 1;
+			} else if (middle < value) {
+				low = mid + 1;
 			} else {
-				bs.set(num0);				
+				return mid;
 			}
 		}
+		return -1;		
 	}
-
+	
+	public static int search(Listy list, int value) {
+		int index = 1;
+		while (list.elementAt(index) != -1 && list.elementAt(index) < value) {
+			index *= 2;
+		}
+		return binarySearch(list, value, index / 2, index);
+	}
 	
 	public static void main(String[] args) {
-		int[] array = AssortedMethods.randomArray(30, 1, 30);
-		System.out.println(AssortedMethods.arrayToString(array));
-		checkDuplicates(array);
+		int[] array = {1, 2, 4, 5, 6, 7, 9, 10, 11, 12, 13, 14, 16, 18};
+		Listy list = new Listy(array);
+		for (int a : array) {
+			System.out.println(search(list, a));
+		}
+		System.out.println(search(list, 15));
 	}
 
 }
